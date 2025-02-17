@@ -30,20 +30,23 @@ internal class Program
 
 }
 
-internal class Zoo
+internal class ZooAnimals
 {
-    public string[] AnimalList()
+    public string[] GetAnimalList()
     {
-        string[] pettingZoo =
-{
-            "alpacas", "capybaras", "chickens", "ducks", "emus", "geese",
-            "goats", "iguanas", "kangaroos", "lemurs", "llamas", "macaws",
-            "ostriches", "pigs", "ponies", "rabbits", "sheep", "tortoises",
-        };
-    
-        return pettingZoo;
-
+        return AnimalList();
     }
+
+    private string[] AnimalList()
+    {
+        return new string[]
+        {
+        "alpacas", "capybaras", "chickens", "ducks", "emus", "geese",
+        "goats", "iguanas", "kangaroos", "lemurs", "llamas", "macaws",
+        "ostriches", "pigs", "ponies", "rabbits", "sheep", "tortoises",
+        };
+    }
+
 
     /* In this method I need to randomize it:
      * We have 18 animals (preferably we can use array.length) so we have to generate random number 0-18, compare it with array, 
@@ -66,5 +69,26 @@ internal class Zoo
 }
 internal class School
 {
+    // We use this class class and constructor so we can use school object for filling our list with schools
+
+    public string Name { get; }
+    public int GroupCount { get; }
+
+    public School(string name, int groupCount)
+    {
+        Name = name;
+        GroupCount = groupCount;
+    }
+}
+internal class SchoolList
+{
+
+    // In this class we fill our list of schools with data: school name, number of groups
+    List<School> schools = new List<School>
+{
+    new School("School A", 6),
+    new School("School B", 3),
+    new School("School C", 2)
+};
 
 }

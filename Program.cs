@@ -25,18 +25,22 @@ internal class Program
     static void Main(string[] args)
     {
 
+
+        SchoolList schoolList = new SchoolList();
+        schoolList.AddSchool();
+
         Result result = new Result();
-        result.PrintResult();
+        result.PrintResult(schoolList);
+
     }
 
 
 }
 internal class Result
 {
-    public void PrintResult()
+    public void PrintResult(SchoolList schoolList)
     {
         ZooAnimals zooAnimals = new ZooAnimals();
-        SchoolList schoolList = new SchoolList();
 
         // School list
         List<School> schools = schoolList.GetSchools();
@@ -57,6 +61,7 @@ internal class Result
         }
     }
 }
+
 
 internal class ZooAnimals
 {
@@ -159,16 +164,49 @@ internal class School
 // In this class we fill our list of schools with data: school name, number of groups
 internal class SchoolList
 {
-    public List<School> GetSchools()
+    // Declare the list of schools as a class member
+    private List<School> schools = new List<School>
     {
-        List<School> schools = new List<School>
-        {
         new School("School A", 6),
         new School("School B", 3),
         new School("School C", 2)
-        };
+    };
 
+    // Method to return the list of schools
+    public List<School> GetSchools()
+    {
         return schools;
     }
 
+    // Method to add a new school to the list
+    public void AddSchool()
+    {
+        Console.Write("Enter the name of the school: ");
+        string name = Console.ReadLine();
+
+        int groupCount = 0;
+        bool isValidGroupCount = false;
+
+        // Loop until the user enters a valid number of groups
+        while (!isValidGroupCount)
+        {
+            Console.Write("Enter the number of groups: ");
+            string input = Console.ReadLine();
+
+            // Try to convert the input to an integer
+            if (int.TryParse(input, out groupCount) && groupCount > 0)
+            {
+                isValidGroupCount = true;
+            }
+            else
+            {
+                Console.WriteLine("Please enter a valid positive integer for the number of groups.");
+            }
+        }
+
+        // Add the new school to the list
+        schools.Add(new School(name, groupCount));
+        Console.WriteLine($"School '{name}' with {groupCount} groups has been added to the list.");
+    }
 }
+

@@ -25,6 +25,16 @@ internal class Program
     static void Main(string[] args)
     {
 
+        Result result = new Result();
+        result.PrintResult();
+    }
+
+
+}
+internal class Result
+{
+    public void PrintResult()
+    {
         ZooAnimals zooAnimals = new ZooAnimals();
         SchoolList schoolList = new SchoolList();
 
@@ -33,21 +43,19 @@ internal class Program
 
         foreach (var school in schools)
         {
-            // Náhodně přiřazení zvířat do skupin
+            // Randomly assign animals to groups
             string[][] animalGroups = zooAnimals.RandomizeAnimals(school.GroupCount);
 
-            // Vytištění názvu školy
+            // Print the name of the school
             Console.WriteLine($"School Name: {school.Name}");
             for (int i = 0; i < animalGroups.Length; i++)
             {
-                // Vytištění zvířat v každé skupině
+                // Print out animals in each group
                 Console.WriteLine($"Group {i + 1}: {string.Join(", ", animalGroups[i])}");
             }
             Console.WriteLine();
         }
     }
-
-
 }
 
 internal class ZooAnimals
@@ -119,31 +127,47 @@ internal class ZooAnimals
     // AssignGroup();
 
 }
+// We use this class class and constructor so we can use school object for filling our list with schools
 internal class School
 {
-    // We use this class class and constructor so we can use school object for filling our list with schools
+    // Private fields for the school name & group count
+    private string name;
+    private int groupCount;
 
-    public string Name { get; }
-    public int GroupCount { get; }
+    
+    // Public properties to access the private fields
+    public string Name
+    {
+        get { return name; }
+        private set { name = value; }
+    }
 
+    public int GroupCount
+    {
+        get { return groupCount; }
+        private set { groupCount = value; }
+    }
+
+    // Class constructor
     public School(string name, int groupCount)
     {
         Name = name;
         GroupCount = groupCount;
     }
 }
+
+// In this class we fill our list of schools with data: school name, number of groups
 internal class SchoolList
 {
-
-    // In this class we fill our list of schools with data: school name, number of groups
-    List<School> schools = new List<School>
-{
-    new School("School A", 6),
-    new School("School B", 3),
-    new School("School C", 2)
-};
     public List<School> GetSchools()
     {
+        List<School> schools = new List<School>
+        {
+        new School("School A", 6),
+        new School("School B", 3),
+        new School("School C", 2)
+        };
+
         return schools;
     }
 

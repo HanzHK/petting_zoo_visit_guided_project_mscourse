@@ -25,6 +25,26 @@ internal class Program
     static void Main(string[] args)
     {
 
+        ZooAnimals zooAnimals = new ZooAnimals();
+        SchoolList schoolList = new SchoolList();
+
+        // School list
+        List<School> schools = schoolList.GetSchools();
+
+        foreach (var school in schools)
+        {
+            // Náhodně přiřazení zvířat do skupin
+            string[][] animalGroups = zooAnimals.RandomizeAnimals(school.GroupCount);
+
+            // Vytištění názvu školy
+            Console.WriteLine($"School Name: {school.Name}");
+            for (int i = 0; i < animalGroups.Length; i++)
+            {
+                // Vytištění zvířat v každé skupině
+                Console.WriteLine($"Group {i + 1}: {string.Join(", ", animalGroups[i])}");
+            }
+            Console.WriteLine();
+        }
     }
 
 
@@ -52,15 +72,47 @@ internal class ZooAnimals
      * We have 18 animals (preferably we can use array.length) so we have to generate random number 0-18, compare it with array, 
      * check if we didnt use it before and assign it to the new "group" array
      * */
-    public string[] RandomizeAnimals(int numberOfGroups)
+    public string[][] RandomizeAnimals(int numberOfGroups)
     {
         string[] animals = AnimalList();
         int numberOfAnimals = animals.Length;
 
-        Random random = new Random();
-        int generatedRandom = random.Next(numberOfAnimals);
+        string[] randomizedAnimals = new string[numberOfAnimals];
+        bool[] usedIndices = new bool[numberOfAnimals];
 
-        return groupArray;
+        Random random = new Random();
+
+        int index = 0;
+        while (index < numberOfAnimals)
+        {
+            int generatedRandom = random.Next(numberOfAnimals);
+            if (usedIndices[generatedRandom] == false)
+            {
+                randomizedAnimals[index] = animals[generatedRandom];
+                index++;
+                usedIndices[generatedRandom] = true;
+            }
+        }
+
+        // 
+        string[][] groups = new string[numberOfGroups][];
+        int animalsPerGroup = numberOfAnimals / numberOfGroups;
+        int extraAnimals = numberOfAnimals % numberOfGroups;
+
+        index = 0;
+        for (int i = 0; i < numberOfGroups; i++)
+        {
+            int groupSize = animalsPerGroup + (i < extraAnimals ? 1 : 0);
+            groups[i] = new string[groupSize];
+            for (int j = 0; j < groupSize; j++)
+            {
+                groups[i][j] = randomizedAnimals[index++];
+            }
+        }
+
+
+
+        return groups;
     }
 
     // In this method I have to 
@@ -90,5 +142,9 @@ internal class SchoolList
     new School("School B", 3),
     new School("School C", 2)
 };
+    public List<School> GetSchools()
+    {
+        return schools;
+    }
 
 }

@@ -24,21 +24,67 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        Menu menu = new Menu();
+        menu.MenuLogic();
 
 
-        SchoolList schoolList = new SchoolList();
-        schoolList.AddSchool();
 
-        Result result = new Result();
-        result.PrintResult(schoolList);
+
 
     }
 
 
 }
+internal class Menu
+{
+
+    public void ShowMenu()
+    {
+        Console.WriteLine("Menu");
+        Console.WriteLine("1. Show schools list");
+        Console.WriteLine("2. Show school groups allocation");
+        Console.WriteLine("3. Add a new school");
+        Console.WriteLine("4. End program");
+    }
+    public void MenuLogic()
+    {
+        
+
+        SchoolList schoolList = new SchoolList();
+        Result result = new Result();
+
+        while (true)
+        {
+            ShowMenu();
+            Console.WriteLine("Please type a corresponding number 1-4 to select desired action");
+            string userChoice = Console.ReadLine();
+
+            switch (userChoice)
+            {
+                case "1":
+                    result.PrintSchoolList(schoolList);
+                    break;
+                case "2":
+                    result.PrintGroups(schoolList);
+                    break;
+                case "3":
+                    schoolList.AddSchool();
+                    break;
+                case "4":
+                    return;
+                default:
+                    Console.WriteLine("Invalid input. Please enter a number between 1-4.");
+                    break;
+            }
+            Console.WriteLine("\nPress any key to return to menu...");
+            Console.ReadKey();
+            Console.Clear(); 
+        }
+    }
+}
 internal class Result
 {
-    public void PrintResult(SchoolList schoolList)
+    public void PrintGroups(SchoolList schoolList)
     {
         ZooAnimals zooAnimals = new ZooAnimals();
 
@@ -59,6 +105,18 @@ internal class Result
             }
             Console.WriteLine();
         }
+    }
+    public void PrintSchoolList(SchoolList schoolList)
+    {
+        Console.WriteLine("List of schools and number of groups each school have:");
+        // School list
+        List<School> schools = schoolList.GetSchools();
+        foreach (var school in schools)
+        {
+            Console.WriteLine($"School Name: {school.Name}, Number of Groups: {school.GroupCount}");
+        }
+
+
     }
 }
 
@@ -164,7 +222,7 @@ internal class School
 // In this class we fill our list of schools with data: school name, number of groups
 internal class SchoolList
 {
-    // Declare the list of schools as a class member
+    // Declaring the list of schools as a class member
     private List<School> schools = new List<School>
     {
         new School("School A", 6),
